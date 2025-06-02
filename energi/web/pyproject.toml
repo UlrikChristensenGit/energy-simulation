@@ -1,0 +1,37 @@
+[tool.poetry]
+name = "web"
+version = "0.1.0"
+description = ""
+authors = ["uch <uch@energinet.dk>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+dash = "^2.18.2"
+pandas = "^2.2.3"
+dash-mantine-components = "0.15.0"
+pvlib = "^0.11.1"
+diskcache = "^5.6.3"
+scikit-learn = "^1.5.2"
+numpy = "2.0.0"
+adlfs = "^2024.7.0"
+python-dotenv = "^1.0.1"
+dash-iconify = "^0.1.2"
+dash-ag-grid = "^31.3.0"
+dash-mantine-react-table = "^0.0.1"
+xarray = "^2024.11.0"
+zarr = "^2.18.3"
+h5netcdf = "^1.4.1"
+bottleneck = "^1.4.2"
+jupyter = "^1.1.1"
+
+[tool.poetry.group.dev.dependencies]
+black = "^25.1.0"
+isort = "^6.0.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.isort]
+profile = "black"
