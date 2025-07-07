@@ -2,6 +2,8 @@ import dash_mantine_components as dmc
 from dash import Input, Output, callback, html
 from dash_iconify import DashIconify
 
+from . import base
+
 
 def get_battery_properties(params) -> html.Div:
     return dmc.Stack(
@@ -55,30 +57,28 @@ def get_advanced_battery_properties(params) -> html.Div:
     )
 
 
-def get_battery_section(params) -> html.Div:
+def get_active_battery_properties(params) -> html.Div:
     return html.Div(
         id="battery-section",
         children=[
-            dmc.Stack(
-                children=[
-                    dmc.Text("Egenskaber", c="blue"),
-                    get_battery_properties(params),
-                ]
+            base.get_section(
+                name="Egenskaber", children=[get_battery_properties(params)]
             )
         ],
     )
 
 
 def get_battery_panel(params) -> html.Div:
-    return dmc.Stack(
+    return base.get_panel(
+        name="Batteri",
         children=[
             dmc.Switch(
                 label="Intet batteri",
                 id={"id": "no_battery", "type": "param"},
                 checked=params["no_battery"],
             ),
-            get_battery_section(params),
-        ]
+            get_active_battery_properties(params),
+        ],
     )
 
 

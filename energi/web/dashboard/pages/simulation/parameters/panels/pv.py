@@ -2,6 +2,8 @@ import dash_mantine_components as dmc
 from dash import Input, Output, callback, html
 from dash_iconify import DashIconify
 
+from . import base
+
 
 def get_location_choice(params) -> html.Div:
     return dmc.Stack(
@@ -135,36 +137,45 @@ def get_advanced_pv_properties(params) -> html.Div:
     )
 
 
-def get_pv_section(params) -> html.Div:
+def get_active_pv_parameters(params) -> html.Div:
     return html.Div(
         id="pv-section",
         children=[
-            dmc.Stack(
+            base.get_section(
+                name="Placering",
                 children=[
-                    dmc.Text("Placering", c="blue"),
                     get_location_choice(params),
                     get_coordinate_location(params),
                     get_address_location(params),
-                    dmc.Text("Egenskaber", c="blue"),
+                ],
+            ),
+            base.get_section(
+                name="Egenskaber",
+                children=[
                     get_pv_properties(params),
-                    dmc.Text("Avancerede egenskaber", c="blue"),
+                ],
+            ),
+            base.get_section(
+                name="Avancerede egenskaber",
+                children=[
                     get_advanced_pv_properties(params),
-                ]
-            )
+                ],
+            ),
         ],
     )
 
 
 def get_pv_panel(params) -> html.Div:
-    return dmc.Stack(
+    return base.get_panel(
+        name="Solceller",
         children=[
             dmc.Switch(
                 label="Ingen solceller",
                 id={"id": "no_pv", "type": "param"},
                 checked=params["no_pv"],
             ),
-            get_pv_section(params),
-        ]
+            get_active_pv_parameters(params),
+        ],
     )
 
 

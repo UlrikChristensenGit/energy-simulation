@@ -1,6 +1,6 @@
 import pandas as pd
 import xarray as xr
-from dash import Input, State, Output, callback
+from dash import Input, Output, State, callback
 
 from calculations import simulations, utils
 from dashboard.params import unpacking
@@ -44,7 +44,7 @@ def get_ts(sim: xr.Dataset, resolution: str) -> xr.Dataset:
     Output("cost-savings-chart", "children"),
     Output("metrics", "children"),
     Output("summary", "children"),
-    #Input("run-simulation", "n_clicks"),
+    # Input("run-simulation", "n_clicks"),
     Input("params", "data"),
 )
 def visualize(params: dict) -> list:

@@ -48,7 +48,7 @@ def simulate_hybrid_system(
     return flow
 
 
-#@cache.memoize()
+# @cache.memoize()
 def simulate_hybrid_system_with_costs(
     price_area: str,
     hybrid_system: HybridSystem,
@@ -67,8 +67,14 @@ def simulate_hybrid_system_with_costs(
 
     flow["consumption_J"] = flow["consumption_W"] * periods
     flow["pv_generation_J"] = flow["pv_generation_W"] * periods
-    flow["battery_power_J"] = simulations.net_to_gross(hybrid_system.battery, flow["battery_power_W"]) * periods
-    flow["battery_state_of_charge"] = -flow["battery_power_J"].cumsum(dim="time_utc") / hybrid_system.battery.max_energy
+    flow["battery_power_J"] = (
+        simulations.net_to_gross(hybrid_system.battery, flow["battery_power_W"])
+        * periods
+    )
+    flow["battery_state_of_charge"] = (
+        -flow["battery_power_J"].cumsum(dim="time_utc")
+        / hybrid_system.battery.max_energy
+    )
     flow["pv_to_battery_J"] = flow["pv_to_battery_W"] * periods
     flow["battery_to_consumption_J"] = flow["battery_to_consumption_W"] * periods
     flow["pv_to_consumption_J"] = flow["pv_to_consumption_W"] * periods
@@ -81,6 +87,8 @@ def simulate_hybrid_system_with_costs(
         flow["battery_to_consumption_J"] * flow["spot_price_DKK_J"]
     )
 
-    flow["saved_costs_DKK"] = flow["pv_saved_costs_DKK"] + flow["battery_saved_costs_DKK"]
+    flow["saved_costs_DKK"] = (
+        flow["pv_saved_costs_DKK"] + flow["battery_saved_costs_DKK"]
+    )
 
     return flow
