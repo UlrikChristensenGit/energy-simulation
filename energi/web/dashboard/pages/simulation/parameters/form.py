@@ -2,68 +2,55 @@ import dash_mantine_components as dmc
 from dash import html
 from dash_iconify import DashIconify
 
-from . import sections
+from . import panels
+
+
+def get_tab(name: str, icon: DashIconify) -> dmc.TabsTab:
+    return dmc.TabsTab(
+        children=dmc.Text(name),
+        value=name,
+        leftSection=icon,
+    )
+
+
+def get_panel(name: str, content: html.Div) -> dmc.TabsPanel:
+    return dmc.TabsPanel(
+        value=name,
+        pt="md",
+        children=content,
+    )
 
 
 def get_form(params) -> html.Div:
-    return dmc.Stack(
+    return dmc.Tabs(
+        value="Forbrug",
         children=[
-            dmc.Tabs(
-                value="consumption",
+            dmc.TabsList(
+                justify="center",
+                grow=True,
                 children=[
-                    dmc.TabsList(
-                        justify="center",
-                        grow=True,
-                        children=[
-                            dmc.TabsTab(
-                                children=dmc.Text("Forbrug"),
-                                value="consumption",
-                                leftSection=DashIconify(
-                                    icon="ic:twotone-other-houses", color="#228BE6"
-                                ),
-                            ),
-                            dmc.TabsTab(
-                                children=dmc.Text("Solceller"),
-                                value="pv",
-                                leftSection=html.Div(id="pv-section-icon"),
-                            ),
-                            dmc.TabsTab(
-                                children=dmc.Text("Batteri"),
-                                value="battery",
-                                leftSection=html.Div(id="battery-section-icon"),
-                            ),
-                        ],
-                    ),
-                    dmc.TabsPanel(
-                        value="consumption",
-                        children=dmc.Group(
-                            pt="md",
-                            grow=True,
-                            children=sections.get_consumption_panel(params),
+                    get_tab(
+                        name="Forbrug",
+                        icon=DashIconify(
+                            icon="ic:twotone-other-houses", color="#228BE6"
                         ),
                     ),
-                    dmc.TabsPanel(
-                        value="pv",
-                        children=dmc.Group(
-                            pt="md",
-                            grow=True,
-                            children=sections.get_pv_panel(params),
-                        ),
+                    get_tab(
+                        name="Solceller",
+                        icon=html.Div(
+                            id="pv-section-icon"
+                        ),  # placeholder for dynamic icon
                     ),
-                    dmc.TabsPanel(
-                        value="battery",
-                        children=dmc.Group(
-                            pt="md",
-                            grow=True,
-                            children=sections.get_battery_panel(params),
-                        ),
+                    get_tab(
+                        name="Batteri",
+                        icon=html.Div(
+                            id="battery-section-icon"
+                        ),  # placeholder for dynamic icon
                     ),
                 ],
             ),
-            #dmc.Button(
-            #    id="run-simulation",
-            #    leftSection=DashIconify(icon="ic:baseline-refresh"),
-            #    children="Kør simulering",
-            #)
+            panels.get_consumption_panel(params),
+            get_panel(name="Solceller", content=panels.get_pv_panel(params)),
+            panels.get_battery_panel(params),
         ],
     )

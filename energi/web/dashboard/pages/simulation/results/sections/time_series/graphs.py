@@ -1,7 +1,7 @@
 import pandas as pd
 import xarray as xr
-from calculations import utils
 
+from calculations import utils
 from dashboard import plotting
 
 pd.options.plotting.backend = "plotly"
@@ -14,7 +14,11 @@ def make_pv_generation_time_series_chart(ds: xr.Dataset):
 
     x = {"column": "time_utc", "label": "Tid"}
     y = [
-        {"column": "pv_to_consumption_kWh", "label": "Til forbrug", "color": "yellow.6"},
+        {
+            "column": "pv_to_consumption_kWh",
+            "label": "Til forbrug",
+            "color": "yellow.6",
+        },
         {
             "column": "pv_to_battery_kWh",
             "label": "Til battery (opladning)",
@@ -30,7 +34,9 @@ def make_pv_generation_time_series_chart(ds: xr.Dataset):
 
 def make_consumption_time_series_chart(ds: xr.Dataset):
     ds["pv_to_consumption_kWh"] = utils.joule_to_kwh(ds["pv_to_consumption_J"])
-    ds["battery_to_consumption_kWh"] = utils.joule_to_kwh(ds["battery_to_consumption_J"])
+    ds["battery_to_consumption_kWh"] = utils.joule_to_kwh(
+        ds["battery_to_consumption_J"]
+    )
     ds["grid_to_consumption_kWh"] = utils.joule_to_kwh(ds["grid_to_consumption_J"])
 
     x = {"column": "time_utc", "label": "Tid"}
@@ -56,9 +62,11 @@ def make_consumption_time_series_chart(ds: xr.Dataset):
 def make_cost_savings_time_series_chart(ds: xr.Dataset):
     x = {"column": "time_utc", "label": "Tid"}
     y = [
-        {"column": "saved_costs_DKK", "label": "Omkostningsbesparelse", "color": "gray.6"},
+        {
+            "column": "saved_costs_DKK",
+            "label": "Omkostningsbesparelse",
+            "color": "gray.6",
+        },
     ]
 
-    return plotting.area(
-        ds, x, y, yaxis_label="DKK", curve_type="linear", type="split"
-    )
+    return plotting.area(ds, x, y, yaxis_label="DKK", curve_type="linear", type="split")
